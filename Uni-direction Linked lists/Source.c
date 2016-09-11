@@ -6,7 +6,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // A program that creates and utilizes a uni-directional linked list, it will utilize a struct type def
-// 
+// and includes an add and remove functionality
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,15 +19,18 @@
 
 
 //Gloabal Variables and Defines
-//Structure Type Definition for a linked list structure
-typedef struct linkedList
-{
-	int itemData;
-	struct linkedList *nextItem;
-}LINKED_LIST_ITEM;
+	//Structure Type Definition for a linked list structure
+	typedef struct linkedList
+	{
+		//"payload"
+		int itemData;
+		//pointer to next item
+		struct linkedList *nextItem;
+	}LINKED_LIST_ITEM;
 
-//Global pointer to list start
-LINKED_LIST_ITEM *startItemPtr = NULL;
+	//Global pointer to list start
+	LINKED_LIST_ITEM *startItemPtr = NULL;
+//
 
 
 //Function Prototypes
@@ -35,6 +38,7 @@ int addItem(int);
 int removeItem(int);
 int printList();
 LINKED_LIST_ITEM* checkList(int);
+//
 
 
 main()
@@ -43,6 +47,7 @@ main()
 	char activity = ' ';
 	int tempItemData = -1;
 
+	//loop for program body
 	while (activity != 'q')
 	{
 		//query user for input on next action and normalize input
@@ -56,25 +61,33 @@ main()
 		{
 		case 'i':
 			//insert case
-			printf("Value to be inserted: ");
-			scanf_s(" %d", &tempItemData);
-			addItem(tempItemData);
-			printList();
+			//query user for number to add
+				printf("Value to be inserted: ");
+				scanf_s(" %d", &tempItemData);
+			//add number to list
+				addItem(tempItemData);
+			//print new list for user
+				printList();
 			break;
 
 		case 'r':
 			//remove case
-			printf("Value to be removed: ");
-			scanf_s(" %d", &tempItemData);
-			removeItem(tempItemData);
-			printList();
+			//query user for number to remove
+				printf("Value to be removed: ");
+				scanf_s(" %d", &tempItemData);
+			//remove number from list
+				removeItem(tempItemData);
+			//print new list
+				printList();
 			break;
 
 		case 'q':
 			//quit case
-			printf("Your final list was:");
-			printList();
-			printf("\n\nBye");
+			//print the final list
+				printf("Your final list was:");
+				printList();
+			//quit gracefully
+				printf("\n\nBye");
 			break;
 
 		default:
@@ -90,13 +103,12 @@ main()
 //function that adds an item to the list in an ordered fashion
 int addItem(int newItemData)
 {
-	//temporary pointer needed for traversal
+	//temporary pointers needed for traversal
 	LINKED_LIST_ITEM *traversalLeaderPtr = startItemPtr;
 	LINKED_LIST_ITEM *traversalFollowPtr = startItemPtr;
 	LINKED_LIST_ITEM *newListItemPtr = NULL;
-	bool inserted = false;
 
-	//get memory and edit the item
+	//get memory and edit the new item
 	newListItemPtr = malloc(sizeof(LINKED_LIST_ITEM));
 	newListItemPtr->itemData = newItemData;
 	newListItemPtr->nextItem = NULL;
@@ -116,38 +128,51 @@ int addItem(int newItemData)
 	}//elseif
 	else //not first entry on list and not in the list already
 	{
-		//set the leader in the lead to start the insertion
+		//make the leader pointer lead if there is more than one item in the list
 		if (startItemPtr->nextItem != NULL)
 		{
 			traversalLeaderPtr = traversalLeaderPtr->nextItem;
 		}
 
-		while (traversalLeaderPtr != NULL && inserted != true)//loop to traverse list
+		//variable to end the loop when the number has been inserted
+		bool inserted = false;
+
+		//loop for list traversal
+		while (traversalLeaderPtr != NULL && inserted != true)
 		{
 			//insert at the end of the list
 			if ((traversalLeaderPtr->nextItem == NULL) && (traversalLeaderPtr->itemData < newItemData))
 			{
-				traversalLeaderPtr->nextItem = newListItemPtr; //set the privious item's nextItem ptr to the new item
+				//set the privious item's 'nextItem' pointer to the new item
+				traversalLeaderPtr->nextItem = newListItemPtr;
+				//end the loop
 				inserted = true;
 			}//if
 
 			//discovered location is at the start
 			else if ((traversalFollowPtr == startItemPtr) && (traversalLeaderPtr->itemData > newItemData))
 			{
-				newListItemPtr->nextItem = startItemPtr; //set the new items nextItem ptr to the next item
-				startItemPtr = newListItemPtr; //set the start equal to the new starting item
+				//set the new items nextItem pointer to the next item
+				newListItemPtr->nextItem = startItemPtr;
+				//set the start equal to the new starting item
+				startItemPtr = newListItemPtr;
+				//end the loop
 				inserted = true;
 			}//elseif
 
 			//regular insertion into list
 			else if (traversalLeaderPtr->itemData > newItemData)
 			{
-				newListItemPtr->nextItem = traversalFollowPtr->nextItem; //set the new items nextItem ptr to the next item
-				traversalFollowPtr->nextItem = newListItemPtr; //set the previous item's nextItem ptr to the new item
+				//set the new items 'nextItem' pointer to the next item
+				newListItemPtr->nextItem = traversalFollowPtr->nextItem;
+				//set the previous item's 'nextItem' pointer to the new item
+				traversalFollowPtr->nextItem = newListItemPtr;
+				//end the loop
 				inserted = true;
 			}//else
 
-			traversalLeaderPtr = traversalLeaderPtr->nextItem; //traversal
+			//traversal
+			traversalLeaderPtr = traversalLeaderPtr->nextItem;
 			traversalFollowPtr = traversalFollowPtr->nextItem;
 
 		}//while
@@ -179,28 +204,32 @@ int removeItem(int itemdata)
 	//perform the removal if the item exists
 	if (removalPtr != NULL)
 	{
+		//if the first item is being removed
 		if (removalPtr == startItemPtr)
 		{
-			//if the first item is being removed
+			//change the start of the list
 			startItemPtr = removalPtr->nextItem;
 		}//if
+		//if any item other than the first is being removed
 		else
 		{
+			//traverse the list until the item before the one to remove is found
 			while (traversalPtr->nextItem != removalPtr)
 			{
 				traversalPtr = traversalPtr->nextItem;
 			}//while
 
-			//fix the list so that the item before the one removed points to the one after
+			//fix the list so that the item before the one to be removed points to the one after
 			traversalPtr->nextItem = removalPtr->nextItem;
 		}//else
 
-		//free the memory space
+		//free the memory space of the removed item
 		free(removalPtr);
 
 		//return success
 		return 1;
 	}//if
+	//if the removal item does not exist
 	else if (removalPtr == NULL)
 	{
 		//notify the user that the item was not found in the list
@@ -209,6 +238,7 @@ int removeItem(int itemdata)
 		return 1;
 	}//elseif
 
+	//return failed removal
 	return 0;
 
 }//removeItem()
@@ -223,23 +253,35 @@ int printList()
 	//check if the list is empty
 	if (traversalPtr == NULL)
 	{
+		//return success
 		return 1;
 	}
 	else //the list does not start with NULL ie: its not empty
 	{
+		//loop to print all the items in the list
 		do
 		{
+			//print the item data
 			printf("%d", traversalPtr->itemData);
+
+			//if its not the last item print an arrow
 			if (traversalPtr->nextItem != NULL)
 			{
 				printf(" -> ");
 			}
+			//traverse to the next item in the list
 			traversalPtr = traversalPtr->nextItem;
 		} while (traversalPtr != NULL);
+
+		//print newlines after the list to indicate completion 
 		printf("\n\n");
+
+		//return success
 		return 1;
 
 	}//else
+
+	//return failure
 	return 0;
 }//printList
 
@@ -250,22 +292,29 @@ LINKED_LIST_ITEM* checkList(int checkNum)
 	//if the list is empty
 	if (startItemPtr == NULL)
 	{
+		//return success
 		return startItemPtr;
 	}
 
 	//temporary pointer needed for traversal if the list is not empty
 	LINKED_LIST_ITEM *traversalPtr = startItemPtr;
 
+	//loop to traverse through the list
 	while (traversalPtr != NULL)
 	{
+		//if the item is found before the end of the list
 		if (traversalPtr->itemData == checkNum)
 		{
+			//return success
 			return traversalPtr;
 		}
+		//if the item is not found by the end of the list
 		else if (traversalPtr->nextItem == NULL)
 		{
-			return NULL;//item not found
+			//return success
+			return NULL;
 		}
+		//traversal
 		traversalPtr = traversalPtr->nextItem;
 	}
 }
