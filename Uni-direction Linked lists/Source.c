@@ -52,7 +52,7 @@ main()
 	{
 		//query user for input on next action and normalize input
 		printf("What do you want to do? [Enter i for insert, r for remove, or q to quit]: ");
-		scanf_s(" %c", &activity);
+		scanf(" %c", &activity);
 		activity = tolower(activity); //make all inputs lowercase
 
 		//use input as a case in switch
@@ -63,7 +63,7 @@ main()
 			//insert case
 			//query user for number to add
 				printf("Value to be inserted: ");
-				scanf_s(" %d", &tempItemData);
+				scanf(" %d", &tempItemData);
 			//add number to list
 				addItem(tempItemData);
 			//print new list for user
@@ -74,7 +74,7 @@ main()
 			//remove case
 			//query user for number to remove
 				printf("Value to be removed: ");
-				scanf_s(" %d", &tempItemData);
+				scanf(" %d", &tempItemData);
 			//remove number from list
 				removeItem(tempItemData);
 			//print new list
