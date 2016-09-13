@@ -3,6 +3,8 @@
 # Linked Lists
 # Gary Muller
 #
+# Originally written by Dr. Davis
+
 
 # Here is a simple Make Macro.
 LINK_TARGET = CS315-LinkedLists.exe
