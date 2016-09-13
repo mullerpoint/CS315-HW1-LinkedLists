@@ -102,7 +102,7 @@ main()
 				printf("Your final list was: ");
 				printList();
 			//quit gracefully
-				printf("\n\nBye");
+				printf("\n\nBye\n");
 			break;
 
 		default:
