@@ -49,8 +49,6 @@ clean :
 # main.o, test1.o, and  test2.o.
 $(LINK_TARGET) : $(OBJS)
 	gcc -g -o $@ $^
-	#g++ -g -o $@ $^
-	#regular g++ compile
 
 # Here is a Pattern Rule, often used for compile-line.
 # It says how to create a file with a .o suffix, given a file with a .cpp suffix.
@@ -59,8 +57,6 @@ $(LINK_TARGET) : $(OBJS)
 # $< for the pattern-matched dependency
 %.o : %.c
 	gcc -g -o $@ -c $<
-	#g++ -g -o $@ -c $<
-	#regular g++ compile
 
 # These are Dependency Rules, which are rules without any command.
 # Dependency Rules indicate that if any file to the right of the colon changes,
