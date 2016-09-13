@@ -67,24 +67,39 @@ main()
 			//add number to list
 				addItem(tempItemData);
 			//print new list for user
+				//list header
+				printf("\nThe list is currently:\n");
 				printList();
 			break;
 
 		case 'r':
 			//remove case
-			//query user for number to remove
-				printf("Value to be removed: ");
-				scanf(" %d", &tempItemData);
-			//remove number from list
-				removeItem(tempItemData);
-			//print new list
-				printList();
+			//only bother asking for a removal input if there is anything that could be removed
+			if (startItemPtr != NULL)
+			{
+				//query user for number to remove
+					printf("Value to be removed: ");
+					scanf(" %d", &tempItemData);
+				//remove number from list
+					removeItem(tempItemData);
+				//print new list
+					//list header
+					printf("\nThe list is currently:\n");
+					printList();
+			}
+			//the list is already empty
+			else
+			{
+				//inform the user they are a fool
+				printf("The list is currently empty\n\n");
+			}
+			
 			break;
 
 		case 'q':
 			//quit case
 			//print the final list
-				printf("Your final list was:");
+				printf("Your final list was: ");
 				printList();
 			//quit gracefully
 				printf("\n\nBye");
@@ -150,7 +165,7 @@ int addItem(int newItemData)
 			}//if
 
 			//discovered location is at the start
-			else if ((traversalFollowPtr == startItemPtr) && (traversalLeaderPtr->itemData > newItemData))
+			else if ((traversalFollowPtr == startItemPtr) && (startItemPtr->itemData > newItemData))
 			{
 				//set the new items nextItem pointer to the next item
 				newListItemPtr->nextItem = startItemPtr;
@@ -193,7 +208,7 @@ int removeItem(int itemdata)
 	if (traversalPtr == NULL)
 	{
 		//notify the user they tried to remove from an empty list
-		printf("The list is currently empty\n");
+		printf("The list is currently empty\n\n");
 		//return success
 		return 1;
 	}//if
@@ -253,6 +268,7 @@ int printList()
 	//check if the list is empty
 	if (traversalPtr == NULL)
 	{
+		printf("\n");
 		//return success
 		return 1;
 	}
